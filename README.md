@@ -1,2 +1,2 @@
-# slack-clone
+# Firebase chat
 Simple chat client with channels
