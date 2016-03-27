@@ -13,4 +13,16 @@ $('#create-channel-btn').on('click', function() {
     });
 });
 
+db.child('channels').on('child_added', function (snapshot) {
+    var channel = snapshot.val();
+    channel.key = snapshot.key();
+    var ch = $('#channel-item-template').clone();
+    ch.removeClass('hidden');
+    ch.removeAttr('id');
+    for (var prop in channel) {
+        $('[data=' + prop + ']', ch).html(channel[prop]);
+    }
+    $('#channel-list').append(ch);
+});
+
 })();
