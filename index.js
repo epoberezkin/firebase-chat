@@ -18,16 +18,20 @@ $('#create-channel-btn').on('click', function() {
 db.child('channels').on('child_added', function (snapshot) {
     var channel = snapshot.val();
     channel.key = snapshot.key();
-    var ch = $('#channel-item-template').clone();
-    ch.removeClass('hidden');
-    ch.removeAttr('id');
+    var ch = addItem($('#channel-list'), $('#channel-item-template'));
     showData(ch, channel);
-    $('#channel-list').append(ch);
 
     ch.on('click', function() {
+        if (messages) {
+            messages.off('child_added', showMessage);
+            $('#channel-messages .message').not('#message-template').remove();
+        }
+
         currentChannel = channel;
         messages = db.child('messages/' + channel.key);
         showData($('#channel-info'), channel);
+
+        messages.on('child_added', showMessage);
     });
 });
 
@@ -38,11 +42,24 @@ $('#send-message').on('click', function() {
     });
 });
 
+function showMessage(snapshot) {
+    var message = snapshot.val();
+    var msg = addItem($('#channel-messages'), $('#message-template'));
+    showData(msg, message);
+}
 
 function showData($el, data) {
     for (var prop in data) {
         $('[data=' + prop + ']', $el).html(data[prop]);
     }
+}
+
+function addItem($list, $template) {
+    var item = $template.clone();
+    item.removeClass('hidden');
+    item.removeAttr('id');
+    $list.append(item);
+    return item;
 }
 
 })();
