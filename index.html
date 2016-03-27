@@ -4,6 +4,9 @@
     <title>slack clone</title>
     <link rel="stylesheet" type="text/css" href="css/bootstrap-modal.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://cdn.firebase.com/js/client/2.4.1/firebase.js"></script>
 </head>
 <body>
     <div class="channels-pane">
@@ -15,7 +18,7 @@
             </li>
         </ul>
 
-        <button type="button">Create</button>
+        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#create-channel">Create</button>
     </div>
 
 
@@ -46,5 +49,33 @@
             <button type="button">Send</button>
         </div>
     </div>
+
+    <div class="modal fade" id="create-channel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Create channel</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="channel-form" class="form-horizontal">
+                        <div class="form-group">
+                            <label for="channel-title">Channel title</label>
+                            <input type="text" class="form-control" id="channel-title" placeholder="title" name="title">
+                        </div>
+                        <div class="form-group">
+                            <label for="channel-title">Channel description</label>
+                            <input type="text" class="form-control" id="channel-description" placeholder="description" name="description">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button id="create-channel-btn" type="button" class="btn btn-primary">Create</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="index.js"></script>
 </body>
 </html>
