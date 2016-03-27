@@ -37,10 +37,26 @@ db.child('channels').on('child_added', function (snapshot) {
 
 $('#send-message').on('click', function() {
     messages.push({
+        userHandle: getHandle(),
         text: $('#message-text').val(),
         timestamp: Date.now()
     });
 });
+
+var HANDLE_KEY = '/slack_clone/userHandle';
+var userHandle = $('#user-handle');
+userHandle.val(getHandle());
+userHandle.on('input', function() {
+    setHandle(userHandle.val());
+});
+
+function getHandle() {
+    return window.localStorage.getItem(HANDLE_KEY);
+}
+
+function setHandle(text) {
+    window.localStorage.setItem(HANDLE_KEY, text);
+}
 
 function showMessage(snapshot) {
     var message = snapshot.val();
