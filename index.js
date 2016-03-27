@@ -20,8 +20,10 @@ db.child('channels').on('child_added', function (snapshot) {
     channel.key = snapshot.key();
     var ch = addItem($('#channel-list'), $('#channel-item-template'));
     showData(ch, channel);
+    if (!currentChannel) selectChannel();
+    ch.on('click', selectChannel);
 
-    ch.on('click', function() {
+    function selectChannel() {
         if (messages) {
             messages.off('child_added', showMessage);
             $('#channel-messages .message').not('#message-template').remove();
@@ -32,16 +34,27 @@ db.child('channels').on('child_added', function (snapshot) {
         showData($('#channel-info'), channel);
 
         messages.on('child_added', showMessage);
-    });
+
+        $('#channel-list li').removeClass('selected');
+        ch.addClass('selected');
+    }
 });
 
-$('#send-message').on('click', function() {
+$('#send-message').on('click', sendMessage);
+
+$('#message-text').on('keypress', function(e) {
+    if (e.keyCode == 13) sendMessage();
+})
+
+function sendMessage() {
+    var text = $('#message-text');
     messages.push({
         userHandle: getHandle(),
-        text: $('#message-text').val(),
+        text: text.val(),
         timestamp: Date.now()
     });
-});
+    text.val('');
+}
 
 var HANDLE_KEY = '/slack_clone/userHandle';
 var userHandle = $('#user-handle');
